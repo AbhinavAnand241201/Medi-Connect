@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { ScreenName } from '../components/App';
 
 export interface User {
   id: string;
@@ -40,6 +41,13 @@ export interface AIDiagnosis {
   severity: 'low' | 'medium' | 'high';
 }
 
+interface StoreState {
+  currentScreen: ScreenName;
+  isAuthenticated: boolean;
+  setCurrentScreen: (screen: ScreenName) => void;
+  setAuthenticated: (isAuthenticated: boolean) => void;
+}
+
 interface AppState {
   user: User | null;
   isAuthenticated: boolean;
@@ -55,7 +63,14 @@ interface AppState {
   aiDiagnoses: AIDiagnosis[];
 }
 
-export const useStore = create<AppState>()(
+export const useStore = create<StoreState>((set) => ({
+  currentScreen: 'home',
+  isAuthenticated: false,
+  setCurrentScreen: (screen) => set({ currentScreen: screen }),
+  setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+}));
+
+export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       user: null,

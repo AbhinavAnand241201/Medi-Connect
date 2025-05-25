@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { StrictMode } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useStore } from '../store';
 import { HomeScreen } from './screens/HomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
@@ -12,9 +13,8 @@ import { VideoCallScreen } from './screens/VideoCallScreen';
 import { AppointmentBookingScreen } from './screens/AppointmentBookingScreen';
 import { MedicalRecordsScreen } from './screens/MedicalRecordsScreen';
 import { PaymentScreen } from './screens/PaymentScreen';
-import { DoctorRatingScreen } from './screens/DoctorRatingScreen';
 
-export type ScreenName = 'home' | 'login' | 'signup' | 'onboarding' | 'mainTab' | 'profile' | 'settings' | 'aiDiagnosis' | 'videoCall' | 'appointmentBooking' | 'medicalRecords' | 'payment' | 'doctorRating';
+export type ScreenName = 'home' | 'login' | 'signup' | 'onboarding' | 'mainTab' | 'profile' | 'settings' | 'aiDiagnosis' | 'videoCall' | 'appointmentBooking' | 'medicalRecords' | 'payment';
 
 export interface ScreenProps {
   navigateTo: (screen: ScreenName) => void;
@@ -24,25 +24,25 @@ export interface ScreenProps {
 }
 
 const App: React.FC = () => {
-  const [currentScreen, setCurrentScreen] = useState<ScreenName>('home');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { currentScreen, setCurrentScreen, isAuthenticated, setAuthenticated } = useStore();
 
   const navigateTo = (screen: ScreenName) => {
     setCurrentScreen(screen);
+    window.scrollTo(0, 0);
   };
 
   const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
+    setAuthenticated(true);
     navigateTo('onboarding');
   };
 
   const handleSignupSuccess = () => {
-    setIsAuthenticated(true);
+    setAuthenticated(true);
     navigateTo('onboarding');
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    setAuthenticated(false);
     navigateTo('home');
   };
 
@@ -71,8 +71,6 @@ const App: React.FC = () => {
         return <MedicalRecordsScreen {...commonProps} />;
       case 'payment':
         return <PaymentScreen {...commonProps} />;
-      case 'doctorRating':
-        return <DoctorRatingScreen {...commonProps} />;
       case 'home':
       default:
         return <HomeScreen {...commonProps} />;

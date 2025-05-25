@@ -1,96 +1,141 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AuthFormContainer } from '../common/AuthFormContainer';
-import { styles } from '../../styles/components';
-import { ScreenProps } from '../App';
+import { ScreenName } from '../App';
+import { AppHeader } from '../common/AppHeader';
+import { styles } from '../../styles/common';
 
-interface SignupScreenProps extends Pick<ScreenProps, 'navigateTo' | 'isAuthenticated' | 'handleLogout'> {
-  onSignupSuccess?: () => void;
+interface SignupScreenProps {
+  navigateTo: (screen: ScreenName) => void;
+  currentScreen: ScreenName;
+  isAuthenticated: boolean;
+  handleLogout: () => void;
+  onSignupSuccess: () => void;
 }
 
-export const SignupScreen: React.FC<SignupScreenProps> = ({
-  navigateTo,
-  isAuthenticated,
-  handleLogout,
-  onSignupSuccess,
+export const SignupScreen: React.FC<SignupScreenProps> = ({ 
+  navigateTo, 
+  currentScreen, 
+  isAuthenticated, 
+  handleLogout, 
+  onSignupSuccess 
 }) => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signup attempt");
-    if (onSignupSuccess) onSignupSuccess();
+    setError(null);
+
+    if (!email || !password || !confirmPassword) {
+      setError('Please fill in all fields.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    try {
+      // TODO: Implement actual signup logic here
+      // For now, simulate a successful signup
+      onSignupSuccess();
+    } catch (err) {
+      setError('Signup failed. Please try again.');
+    }
   };
 
   return (
-    <AuthFormContainer
-      title="Join MediConnect"
-      screenProps={{ navigateTo, currentScreen: 'signup', isAuthenticated, handleLogout }}
-      screenKey="signup"
+    <motion.div
+      style={styles.pageContainer}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <form onSubmit={handleSubmit} style={styles.authForm}>
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-          <label htmlFor="fullName" style={styles.label}>Full Name</label>
-          <motion.input
-            type="text"
-            id="fullName"
-            name="fullName"
-            required
-            style={styles.inputField}
-            placeholder="Your Name"
-            whileFocus={{
-              borderColor: '#007AFF',
-              boxShadow: '0 0 0 3px rgba(0, 122, 255, 0.2)',
-              outline: 'none',
-            }}
-          />
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-          <label htmlFor="email-signup" style={styles.label}>Email Address</label>
-          <motion.input
-            type="email"
-            id="email-signup"
-            name="email"
-            required
-            style={styles.inputField}
-            placeholder="you@example.com"
-            whileFocus={{
-              borderColor: '#007AFF',
-              boxShadow: '0 0 0 3px rgba(0, 122, 255, 0.2)',
-              outline: 'none',
-            }}
-          />
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-          <label htmlFor="password-signup" style={styles.label}>Password</label>
-          <motion.input
-            type="password"
-            id="password-signup"
-            name="password"
-            required
-            style={styles.inputField}
-            placeholder="Choose a strong password"
-            whileFocus={{
-              borderColor: '#007AFF',
-              boxShadow: '0 0 0 3px rgba(0, 122, 255, 0.2)',
-              outline: 'none',
-            }}
-          />
-        </motion.div>
-        <motion.button
-          type="submit"
-          style={styles.ctaButton}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          aria-label="Sign Up"
+      <AppHeader
+        navigateTo={navigateTo}
+        currentScreen={currentScreen}
+        isAuthenticated={isAuthenticated}
+        handleLogout={handleLogout}
+      />
+      <motion.div style={styles.mainContent}>
+        <motion.div
+          style={styles.authFormContainerContent}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
         >
-          Sign Up
-        </motion.button>
-      </form>
-      <p style={styles.authLink}>
-        Already have an account?{' '}
-        <button onClick={() => navigateTo('login')} style={styles.linkButton} aria-label="Navigate to Login page">
-          Login
-        </button>
-      </p>
-    </AuthFormContainer>
+          <h2 style={styles.authTitle}>Create Your MediConnect Account</h2>
+          <form onSubmit={handleSubmit} style={styles.authForm}>
+            <div>
+              <label htmlFor="email" style={styles.label}>Email</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={styles.inputField}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="password" style={styles.label}>Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={styles.inputField}
+                placeholder="Create a password"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" style={styles.label}>Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                style={styles.inputField}
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+            {error && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{ color: '#FF3B30', fontSize: '0.9rem', margin: '0 0 15px 0' }}
+              >
+                {error}
+              </motion.p>
+            )}
+            <motion.button
+              type="submit"
+              style={styles.ctaButton}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Sign Up
+            </motion.button>
+          </form>
+          <div style={styles.authLink}>
+            Already have an account?{' '}
+            <button
+              onClick={() => navigateTo('login')}
+              style={styles.linkButton}
+              type="button"
+            >
+              Log In
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }; 
