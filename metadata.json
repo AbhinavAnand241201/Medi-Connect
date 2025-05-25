@@ -1,0 +1,9 @@
+
+{
+  "description": "A doctor appointment web application with video call features, symptom sharing, and appointment booking.",
+  "prompt": "build an web  app using react , framer motion  and cool animations , use good sleek UI , modern and engaging and very cool user interface and user expereicne , , login ,signup , onboarding , home , maintab , settings , profile , add photos , insane UI ,so the app will be a doctor appointment application an  , u can book an appointment , tell ur symptoms and get a quick easy diagnosis on video call throuhg the app , share ur body part images as swollen legs etc to show the symptoms , having call features in the app , a good calendar view , a good appointment boooking interface , lets go",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

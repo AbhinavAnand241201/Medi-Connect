@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/caduceus.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MediConnect - Your Health, Simplified. Anytime, Anywhere.">
+  <title>MediConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f7f6; /* Light, calming background */
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    #root {
+      width: 100%;
+      max-width: 1200px; /* Max width for larger screens */
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    /* Basic responsive adjustments */
+    @media (max-width: 768px) {
+      #root {
+        padding: 10px;
+      }
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "gsap": "https://esm.sh/gsap@^3.13.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.12.2"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
