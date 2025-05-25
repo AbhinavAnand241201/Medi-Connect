@@ -29,12 +29,15 @@ export interface Appointment {
 
 export interface AIDiagnosis {
   id: string;
-  date: string;
+  timestamp: string;
   symptoms: string[];
-  diagnosis: string;
-  confidence: number;
+  conditions: Array<{
+    name: string;
+    confidence: number;
+    description: string;
+  }>;
   recommendations: string[];
-  paid: boolean;
+  severity: 'low' | 'medium' | 'high';
 }
 
 interface AppState {
@@ -49,6 +52,7 @@ interface AppState {
   addHealthData: (data: Partial<User['healthData']>) => void;
   addAIDiagnosis: (diagnosis: AIDiagnosis) => void;
   updateSubscription: (subscription: User['subscription']) => void;
+  aiDiagnoses: AIDiagnosis[];
 }
 
 export const useStore = create<AppState>()(
@@ -89,14 +93,10 @@ export const useStore = create<AppState>()(
               }
             : null,
         })),
+      aiDiagnoses: [],
       addAIDiagnosis: (diagnosis) =>
         set((state) => ({
-          user: state.user
-            ? {
-                ...state.user,
-                aiDiagnoses: [...state.user.aiDiagnoses, diagnosis],
-              }
-            : null,
+          aiDiagnoses: [...state.aiDiagnoses, diagnosis],
         })),
       updateSubscription: (subscription) =>
         set((state) => ({
