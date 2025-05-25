@@ -7,8 +7,14 @@ import { OnboardingScreen } from './screens/OnboardingScreen';
 import { MainTabScreen } from './screens/MainTabScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
+import { AIAssistedDiagnosisScreen } from './screens/AIAssistedDiagnosisScreen';
+import { VideoCallScreen } from './screens/VideoCallScreen';
+import { AppointmentBookingScreen } from './screens/AppointmentBookingScreen';
+import { MedicalRecordsScreen } from './screens/MedicalRecordsScreen';
+import { PaymentScreen } from './screens/PaymentScreen';
+import { DoctorRatingScreen } from './screens/DoctorRatingScreen';
 
-export type ScreenName = 'home' | 'login' | 'signup' | 'onboarding' | 'mainTab' | 'profile' | 'settings';
+export type ScreenName = 'home' | 'login' | 'signup' | 'onboarding' | 'mainTab' | 'profile' | 'settings' | 'aiDiagnosis' | 'videoCall' | 'appointmentBooking' | 'medicalRecords' | 'payment' | 'doctorRating';
 
 export interface ScreenProps {
   navigateTo: (screen: ScreenName) => void;
@@ -41,7 +47,7 @@ const App: React.FC = () => {
   };
 
   const renderScreen = () => {
-    const commonProps = { navigateTo, isAuthenticated, handleLogout };
+    const commonProps = { navigateTo, isAuthenticated, handleLogout, currentScreen };
     switch (currentScreen) {
       case 'login':
         return <LoginScreen {...commonProps} onLoginSuccess={handleLoginSuccess} />;
@@ -55,6 +61,18 @@ const App: React.FC = () => {
         return <ProfileScreen {...commonProps} />;
       case 'settings':
         return <SettingsScreen {...commonProps} />;
+      case 'aiDiagnosis':
+        return <AIAssistedDiagnosisScreen {...commonProps} />;
+      case 'videoCall':
+        return <VideoCallScreen {...commonProps} />;
+      case 'appointmentBooking':
+        return <AppointmentBookingScreen {...commonProps} />;
+      case 'medicalRecords':
+        return <MedicalRecordsScreen {...commonProps} />;
+      case 'payment':
+        return <PaymentScreen {...commonProps} />;
+      case 'doctorRating':
+        return <DoctorRatingScreen {...commonProps} />;
       case 'home':
       default:
         return <HomeScreen {...commonProps} />;
